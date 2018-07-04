@@ -1,16 +1,17 @@
 # redirect-ssl
-> Connect/Express middleware to enforce https using [is-https](https://www.npmjs.com/package/is-https).
 
-[![npm](https://img.shields.io/npm/dt/redirect-ssl.svg?style=flat-square)](https://npmjs.com/package/redirect-ssl)
-[![npm (scoped with tag)](https://img.shields.io/npm/v/redirect-ssl/latest.svg?style=flat-square)](https://npmjs.com/package/redirect-ssl)
+> Enforce HTTPS on your Nuxt app with Koa backend
 
 ## Usage
+
 Install package
+
 ```bash
-yarn add redirect-ssl # or npm install redirect-ssl
+yarn add @ax2/redirect-ssl
 ```
 
 Require and use middleware (Make sure adding it as the first in the chain)
+
 ```js
 const redirectSSL = require('redirect-ssl')
 
