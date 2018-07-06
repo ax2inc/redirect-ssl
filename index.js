@@ -8,18 +8,27 @@ const defaults = {
   redirectUnknown: true,
   statusCode: 307,
   redirect: process.env.NODE_ENV === 'production',
+  exclude: [],
 };
+
+const isIgnored = (url, patterns = []) => patterns.some(pattern => url.match(pattern));
 
 // Creates new middleware using provided options
 function create(options) {
   const {
-    xForwardedProto, redirectPort, redirectHost, statusCode, redirectUnknown, redirect,
+    xForwardedProto,
+    redirectPort,
+    redirectHost,
+    statusCode,
+    redirectUnknown,
+    redirect,
+    exclude,
   } = Object.assign({}, defaults, options);
   const port = redirectPort === 443 ? '' : (`: ${redirectPort}`);
 
   return function redirectSSL(ctx, next) {
     const { req, res } = ctx;
-    if (redirect) {
+    if (redirect && !isIgnored(req.url, exclude)) {
       const isHttpsReq = isHTTPS(req, xForwardedProto);
       const shouldRedirect = isHttpsReq === false || (redirectUnknown && isHttpsReq === null);
       if (shouldRedirect) {
