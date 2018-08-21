@@ -26,8 +26,15 @@ function create(options) {
   } = Object.assign({}, defaults, options);
   const port = redirectPort === 443 ? '' : (`: ${redirectPort}`);
 
-  return function redirectSSL(ctx, next) {
-    const { req, res } = ctx;
+  return function redirectSSL(...args) {
+    let req;
+    let res;
+    let next;
+    if (args.length === 2) {
+      ([{ req, res }, next] = args);
+    } else {
+      [req, res, next] = args;
+    }
     if (redirect && !isIgnored(req.url, exclude)) {
       const isHttpsReq = isHTTPS(req, xForwardedProto);
       const shouldRedirect = isHttpsReq === false || (redirectUnknown && isHttpsReq === null);
